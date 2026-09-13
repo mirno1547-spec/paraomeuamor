@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Kalam:wght@400;600&family=Pacifico&family=Sacramento&display=swap');
+
+.menu {
+    text-align: center;
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.menu header {
+    letter-spacing: 20px;
+    border: 2px solid rgb(253, 76, 88);
+    border-radius: 15px;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    font-family: 'pacifico';
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(253, 76, 88);
+    border-radius: 15px;
+    padding: 10px;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    letter-spacing: 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+}
+
+body {
+    flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+
+footer {
+  background-color: rgb(253, 76, 88);
+  color: rgb(255, 255, 255);
+  text-align: center;
+  font-family: 'pacifico';
+  font-size: large;
+}
+
+footer hr {
+    color: rgb(255, 255, 255);
+}
+
+.poesia {
+    border: 2px solid rgb(253, 76, 88);
+    border-radius: 15px;
+    font-family: 'pacifico';
+    padding: 10px;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    flex: 0 0 auto;      
+    width: 280px;        
+    scroll-snap-align: center;
+}
+
+.scrollhorizontal {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 20px;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+
+}
+
+.foto {
+    border: 2px solid rgb(253, 76, 88);
+    border-radius: 6px;
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+}
+
+.fotodeitada {
+    border: 2px solid rgb(253, 76, 88);
+    border-radius: 6px;
+    width: 400px;
+    height: 280px;
+    object-fit: cover;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+}
+
+
+.foto-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 0;          /* remove a margem padrão do <figure> */
+    flex: 0 0 auto;      /* essencial dentro do .scroll-lateral */
+    scroll-snap-align: center;
+}
+
+.foto-item figcaption {
+    font-family: 'Kalam', cursive; /* ou outra das que você escolheu */
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
