@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio dos 468 Pontos</title>
+
+    <style>
+        body {
+            background: #171717;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 15px;
+        }
+
+        h1 {
+            color: #00bfff;
+        }
+
+        #area {
+            background: #292929;
+            border: 2px solid #555;
+            border-radius: 12px;
+            height: 420px;
+            max-width: 800px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alvo {
+            width: 43px;
+            height: 43px;
+            border: 2px solid white;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            transition: left 0.2s, top 0.2s;
+        }
+
+        .vermelho { background: #ff2929; }
+        .verde { background: #00c853; }
+        .amarelo { background: #ffd600; }
+
+        #iniciar {
+            background: #008cff;
+            color: white;
+            padding: 13px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #iniciar:disabled {
+            opacity: 0.5;
+        }
+
+        .placar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .placar h2 {
+            margin-bottom: 5px;
+        }
+
+        #mensagem {
+            min-height: 24px;
+            color: #ffd600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>DESAFIO DOS 468 PONTOS</h1>
+    <p>Cuidado! Os alvos mudam de posição!</p>
+
+    <div class="placar">
+        <div>
+            <h2>Pontos</h2>
+            <span id="pontos">0</span>
+        </div>
+
+        <div>
+            <h2>Meta</h2>
+            <span>468</span>
+        </div>
+
+        <div>
+            <h2>Tempo</h2>
+            <span id="tempo">20</span>s
+        </div>
+    </div>
+
+    <p>🔴 -20 | 🟢 +100 | 🟡 +20</p>
+
+    <button id="iniciar" onclick="iniciarJogo()">
+        Iniciar desafio
+    </button>
+
+    <p id="mensagem">Você consegue?</p>
+
+    <div id="area"></div>
+
+    <script>
+        let pontos = 0;
+        let tempo = 20;
+        let intervalo;
+        let movimento;
+        let jogando = false;
+
+        const area = document.getElementById("area");
+
+        function criarAlvos() {
+            area.innerHTML = "";
+
+            for (let i = 0; i < 18; i++) {
+                const alvo = document.createElement("button");
+                alvo.classList.add("alvo");
+
+                const sorteio = Math.random();
+
+                // 50% vermelho, 15% verde, 35% amarelo
+                if (sorteio < 0.50) {
+                    alvo.classList.add("vermelho");
+                    alvo.dataset.valor = -20;
+                    alvo.title = "-20 pontos";
+                } else if (sorteio < 0.65) {
+                    alvo.classList.add("verde");
+                    alvo.dataset.valor = 100;
+                    alvo.title = "+100 pontos";
+                } else {
+                    alvo.classList.add("amarelo");
+                    alvo.dataset.valor = 20;
+                    alvo.title = "+20 pontos";
+                }
+
+                posicionarAlvo(alvo);
+
+                alvo.addEventListener("click", function() {
+                    if (!jogando) return;
+
+                    pontos += Number(alvo.dataset.valor);
+                    pontos = Math.max(0, pontos);
+
+                    document.getElementById("pontos").textContent = pontos;
+
+                    alvo.remove();
+
+                    if (pontos >= 468) {
+                        finalizarJogo(true);
+                    } else if (area.children.length === 0) {
+                        criarAlvos();
+                    }
+                });
+
+                area.appendChild(alvo);
+            }
+        }
+
+        function posicionarAlvo(alvo) {
+            const maxX = area.clientWidth - alvo.offsetWidth;
+            const maxY = area.clientHeight - alvo.offsetHeight;
+
+            alvo.style.left = Math.random() * Math.max(0, maxX) + "px";
+            alvo.style.top = Math.random() * Math.max(0, maxY) + "px";
+        }
+
+        function moverTodos() {
+            document.querySelectorAll(".alvo").forEach(function(alvo) {
+                posicionarAlvo(alvo);
+            });
+        }
+
+        function iniciarJogo() {
+            clearInterval(intervalo);
+            clearInterval(movimento);
+
+            pontos = 0;
+            tempo = 20;
+            jogando = true;
+
+            document.getElementById("pontos").textContent = pontos;
+            document.getElementById("tempo").textContent = tempo;
+            document.getElementById("mensagem").textContent = "Valendo!";
+            document.getElementById("iniciar").disabled = true;
+
+            criarAlvos();
+
+            movimento = setInterval(moverTodos, 2000);
+
+            intervalo = setInterval(function() {
+                tempo--;
+                document.getElementById("tempo").textContent = tempo;
+
+                if (tempo <= 0) {
+                    finalizarJogo(false);
+                }
+            }, 1000);
+        }
+
+        function finalizarJogo(venceu) {
+            jogando = false;
+
+            clearInterval(intervalo);
+            clearInterval(movimento);
+
+            area.innerHTML = "";
+            document.getElementById("iniciar").disabled = false;
+
+            if (venceu) {
+                document.getElementById("mensagem").textContent =
+                    "Você venceu!";
+
+                const link =
+                    "https://dontpad.com/euamoathamirisdossantosferreiramuitoooooooooooooooooooooooo";
+
+                const mensagem =
+                    "Agora eu estou te devendo 20141598119488244637673756937256491774457861991627293663254118822662434522628411727131877266390782239310672935632743562824356774356183274356182709136827061893270639317733562715639692739561827398106,5 beijos, sim a conta está certa, pode fazer na calculadora ou no chat se quiser, te amo";
+
+                alert(mensagem);
+
+                window.location.href = link;
+            } else {
+                document.getElementById("mensagem").textContent =
+                    "Tempo esgotado!";
+
+                alert("Você fez " + pontos +
+                      " pontos. Tente novamente!");
+            }
+        }
+    </script>
+
+</body>
+</html>
